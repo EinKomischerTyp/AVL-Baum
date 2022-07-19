@@ -19,8 +19,6 @@ namespace AVL_Tree
     {
         public Node root;
         Comparison<int> compare;
-        public bool FindIndex = false;
-
 
         //Not sure what it does...
         public AVL_Tree(Comparison<int> _comp)
@@ -128,38 +126,46 @@ namespace AVL_Tree
         }
         public void Find(int? key)
         {
-            if (Find(key, root).data == key)
+            try
             {
-                Console.WriteLine("{0} was found!", key);
+                if (Find(key, root).data == key)
+                {
+                    Console.WriteLine("{0} was found!", key);
+                }
             }
-            else if(FindIndex = true)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Nothing found!");
-                FindIndex = false;
-            }    
+            }
         }
         
         private Node Find(int? search, Node current)
-        {            
-            if (search < current.data)
-            {
-                if (search == current.data)
+        {
+            try
+            { 
+                if (search < current.data)
                 {
-                    return current;
+                    if (search == current.data)
+                    {
+                        return current;
+                    }
+                    else
+                        return Find(search, current.left);
                 }
                 else
-                    return Find(search, current.left);
-            }
-            else
-            {
-                if (search == current.data)
                 {
-                    FindIndex = true;
-                    return current;                  
+                    if (search == current.data)
+                    {
+                        return current;
+                    }
+                    else
+                        return Find(search, current.right);
                 }
-                else
-                    return Find(search, current.right);
             }
+            catch(NullReferenceException)
+            {              
+                return null;
+            }            
         }
         //The conditional operator ?:, also known as the ternary conditional operator,
         //evaluates a Boolean expression and returns the result of one of the two expressions,
