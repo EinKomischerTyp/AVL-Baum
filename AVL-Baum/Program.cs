@@ -11,55 +11,9 @@ namespace AVL_Tree
     {
         static void Main(string[] args)
         {
-            AVL_Tree BinaryTree = new AVL_Tree(Comp);
+            AVL_Tree<int> BinaryTree = new AVL_Tree<int>(Comp);
 
-
-            BinaryTree.Add(10);
-            BinaryTree.Add(5);
-            BinaryTree.Add(3);
-            BinaryTree.Add(1);
-            BinaryTree.Add(4);
-            BinaryTree.Add(7);
-            BinaryTree.Add(8);
-            BinaryTree.Add(6);
-            BinaryTree.Add(15);
-            BinaryTree.Add(17);
-            BinaryTree.Add(20);
-            BinaryTree.Add(16);
-            BinaryTree.Add(12);
-            BinaryTree.Add(11);
-            BinaryTree.Add(14);
-            Print();
-            Console.ReadKey();
-            BinaryTree.Delete(12);
-            BinaryTree.Delete(14);
-            Print();
-            BinaryTree.Find(25);
-            Console.ReadKey();
-
-
-
-            void Print()
-            {
-                if (BinaryTree.root == null)
-                {
-                    Console.WriteLine("Tree is empty");
-                    return;
-                }
-                InOrderDisplayTree(BinaryTree.root);
-                Console.WriteLine();
-            }
-            void InOrderDisplayTree(Node current)
-            {
-                if (current != null)
-                {
-                    InOrderDisplayTree(current.left);
-                    Console.Write($"({current.data})" /*current.data*/);
-                    InOrderDisplayTree(current.right);
-                }
-
-            }
-
+            //Delegate for BinaryTree
             static int Comp(int a, int b)
             {
                 if (a < b) return -1;
@@ -68,7 +22,25 @@ namespace AVL_Tree
 
                 return 0;
             }
+
+
+
+
+
+            
+
+
         }
     }
 
 }
+
+//Eingabe beliebeige Zahlen hinzufügen      done
+//Delegaten übergeben zum Sortieren         not done (1/2 done)
+//Maximale Tiefe ausgeben                   done
+//Elemente finden,                          done
+// -"- hinzufügen                           done
+// -"- entfernen                            done
+//Abfragen, ob Element vorhanden ist        not done
+//
+

@@ -12,4 +12,8 @@
     <Compile Remove="Printer_Class.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="NewFile1.txt" />
+  </ItemGroup>
+
 </Project>

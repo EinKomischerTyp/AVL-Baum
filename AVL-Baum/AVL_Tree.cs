@@ -7,31 +7,33 @@ using System.Threading.Tasks;
 
 namespace AVL_Tree
 {
-    class Node
+    class Node<T>
     {
-        public Node(int _data) { data = _data; }
+        public Node(T _data) { data = _data; }
 
-        public int data;
-        public Node left;
-        public Node right;
+        public T data;
+        public Node<T> left;
+        public Node<T> right;
     }
-    internal class AVL_Tree
+    internal class AVL_Tree<T>
     {
-        public Node root;
-        Comparison<int> compare;
+        public Node<T> root;
+        Comparison<T> compare;
+        public int height = 0;
 
-        //Not sure what it does...
-        public AVL_Tree(Comparison<int> _comp)
+
+        public AVL_Tree(Comparison<T> _comp)
         {
             compare = _comp;
+            root = null;
         }
 
-        public void Add(int _data)
+        public void Add(T _data)
         {
-            root = AddRecursive(new Node(_data), root);
+            root = AddRecursive(new Node<T>(_data), root);
         }
-
-        private Node AddRecursive(Node _toAdd, Node _root)
+        
+        private Node<T> AddRecursive(Node<T> _toAdd, Node<T> _root)
         {
             if (null == _root)
             {
@@ -52,7 +54,7 @@ namespace AVL_Tree
             return _root;
         }
 
-        private Node BalanceTree(Node current)
+        private Node<T> BalanceTree(Node<T> current)
         {
             int bal_Factor = balance_Factor(current);
             if (bal_Factor > 1)
@@ -79,14 +81,14 @@ namespace AVL_Tree
             }
             return current;
         }
-        public void Delete(int target)
+        public void Delete(T target)
         {
             root = DeleteNode(root, target);
         }
-
-        private Node DeleteNode(Node current, int toDelete)
+        
+        private Node<T> DeleteNode(Node<T> current, T toDelete)
         {
-            Node parent;
+            Node<T> parent;
             if (null == current)
             {
                 return null;
@@ -124,11 +126,12 @@ namespace AVL_Tree
             }
             return current;
         }
-        public void Find(int? key)
+
+        public void Find(T? key)
         {
             try
             {
-                if (Find(key, root).data == key)
+                if (compare.Invoke(Find(key, root).data, key) == 0) //(Find(key, root).data == key)//If nothing is found a NullReferenceException is expected here
                 {
                     Console.WriteLine("{0} was found!", key);
                 }
@@ -138,14 +141,14 @@ namespace AVL_Tree
                 Console.WriteLine("Nothing found!");
             }
         }
-        
-        private Node Find(int? search, Node current)
+
+        private Node<T> Find(T? search, Node<T> current) //If nothing is found a NullReferenceException is expected here
         {
             try
-            { 
-                if (search < current.data)
+            {
+                if (compare.Invoke(search, current.data) < 0)
                 {
-                    if (search == current.data)
+                    if (compare.Invoke(search, current.data) == 0)
                     {
                         return current;
                     }
@@ -154,7 +157,7 @@ namespace AVL_Tree
                 }
                 else
                 {
-                    if (search == current.data)
+                    if (compare.Invoke(search, current.data) == 0)
                     {
                         return current;
                     }
@@ -162,11 +165,12 @@ namespace AVL_Tree
                         return Find(search, current.right);
                 }
             }
-            catch(NullReferenceException)
-            {              
+            catch (NullReferenceException)
+            {
                 return null;
-            }            
+            }
         }
+
         //The conditional operator ?:, also known as the ternary conditional operator,
         //evaluates a Boolean expression and returns the result of one of the two expressions,
         //depending on whether the Boolean expression evaluates to true or false
@@ -175,9 +179,9 @@ namespace AVL_Tree
         {
             return left > right ? left : right;
         }
-        private int getHeight(Node current)
+        public int getHeight(Node<T> current)
         {
-            int height = 0;
+           height = 0;
            if (current != null)
             {
                 int left = getHeight(current.left);
@@ -187,36 +191,36 @@ namespace AVL_Tree
             }
             return height;
         }
-        private int balance_Factor(Node current)
+        private int balance_Factor(Node<T> current)
         {
             int left = getHeight(current.left);
             int right = getHeight(current.right);
             int bal_Factor = left - right;
             return bal_Factor;
         }
-        private Node RotateRight(Node parent)
+        private Node<T> RotateRight(Node<T> parent)
         {
-            Node pivot = parent.right;
+            Node<T> pivot = parent.right;
             parent.right = pivot.left;
             pivot.left = parent;
             return pivot;
         }
-        private Node RotateLeft(Node parent)
+        private Node<T> RotateLeft(Node<T> parent)
         {
-            Node pivot = parent.left;
+            Node<T> pivot = parent.left;
             parent.left = pivot.right;
             pivot.right = parent;
             return pivot;
         }
-        private Node RotateLeftRight(Node parent)
+        private Node<T> RotateLeftRight(Node<T> parent)
         {
-            Node pivot = parent.left;
+            Node<T> pivot = parent.left;
             parent.left = RotateRight(pivot);
             return RotateLeft(parent);
         }
-        private Node RotateRightLeft(Node parent)
+        private Node<T> RotateRightLeft(Node<T> parent)
         {
-            Node pivot = parent.right;
+            Node<T> pivot = parent.right;
             parent.right = RotateLeft(pivot);
             return RotateRight(parent);
         }
