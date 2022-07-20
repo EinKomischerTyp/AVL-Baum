@@ -9,7 +9,7 @@ namespace AVL_Tree
 {
     class Node<T>
     {
-        public Node(T _data) { data = _data; }
+        public Node(T _data) => data = _data;
 
         public T data;
         public Node<T> left;
@@ -25,7 +25,7 @@ namespace AVL_Tree
         public AVL_Tree(Comparison<T> _comp)
         {
             compare = _comp;
-            root = null;
+            //root = null;
         }
 
         public void Add(T _data)

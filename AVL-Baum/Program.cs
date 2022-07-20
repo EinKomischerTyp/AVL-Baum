@@ -11,17 +11,10 @@ namespace AVL_Tree
     {
         static void Main(string[] args)
         {
-            AVL_Tree<int> BinaryTree = new AVL_Tree<int>(Comp);
+            CommandsClass CommandsObject = new CommandsClass();
+            AVL_Tree<int> BinaryTree = new AVL_Tree<int>(CommandsObject.Comp);
 
-            //Delegate for BinaryTree
-            static int Comp(int a, int b)
-            {
-                if (a < b) return -1;
-                if (a == b) return 0;
-                if (a > b) return 1;
-
-                return 0;
-            }
+            
 
 
 
