@@ -11,7 +11,7 @@ namespace AVL_Tree
         int _userArrayAmount = 0;
         int userChosenNumber = 0;
         int _result;
-        int min = 0;
+        int min = int.MinValue;
         int max = int.MaxValue;
         public int[]? _userArray;
 
@@ -19,6 +19,7 @@ namespace AVL_Tree
         {
             _userArray = null;
         }
+
 
         public void defineArrayLength(CommandsClass CommandsObject)
         {
@@ -30,43 +31,39 @@ namespace AVL_Tree
         }
 
         //Sets the size of the array by user input with validity check
-        public void FillYourself(CommandsClass CommandsObject)
+        public void FillYourself(CommandsClass CommandsObject, AVL_Tree<int> BinaryTree)
         {
             defineArrayLength(CommandsObject);
 
             Console.WriteLine($"The amount of numbers in the Array is: {_userArrayAmount}");
             Console.WriteLine($"Please enter {_userArrayAmount} numbers, between \n0 \nand \n{max}.");
-
+            //check if _userArray Contains a number that already exists
             if (null != _userArray)
             {
                 for (int i = 0; i < _userArray.Length; i++)
                 {
                     Console.Write($"Please enter the {i + 1}. number in your List:");
                     CommandsObject.ValidateInput(_userArray[i], min, max, out _result);
-                    for (int j = 0; j < _userArray.Length; j++)
+                    /*for (int j = 0; j < _userArray.Length; j++)*/
+                    
+                    bool exists = Array.Exists(_userArray, x => x == _result);
+                    if (exists)
                     {
-                        if (_result == _userArray[j])
-                        {
-                            Console.WriteLine("This Number already exists, please choose another Number");
-                            i--;
-                            Console.WriteLine("Press any Key to continue");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            _userArray[i] = _result;
-                        }
+                        Console.WriteLine("This number is already in the Array.");
+                        i--;
+                    }
+                    else if (!exists)
+                    {
+                        _userArray[i] = _result;
                     }
                 }
             }
-            AVL_Tree<int> BinaryTree = new AVL_Tree<int>(CommandsObject.Comp);
             for (int i = 0; i < _userArray?.Length; i++)
             {
                 BinaryTree.Add(_userArray[i]);
             }
         }
-        void PrintInt(AVL_Tree<T> BinaryTree)
+        public void PrintInt(AVL_Tree<int> BinaryTree)
         {
             if (BinaryTree.root == null)
             {

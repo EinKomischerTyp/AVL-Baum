@@ -7,7 +7,7 @@ namespace AVL_Tree
     /// </summary> 
     class CommandsClass
     {
-        public bool IsValid(string userInput, int min, int max, out int result)
+        public bool IsValid(string? userInput, int min, int max, out int result)
         {
             if (int.TryParse(userInput, out result))
             {

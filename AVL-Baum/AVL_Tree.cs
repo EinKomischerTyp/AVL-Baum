@@ -25,7 +25,7 @@ namespace AVL_Tree
         public AVL_Tree(Comparison<T> _comp)
         {
             compare = _comp;
-            //root = null;
+            root = null;
         }
 
         public void Add(T _data)

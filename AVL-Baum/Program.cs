@@ -11,16 +11,20 @@ namespace AVL_Tree
     {
         static void Main(string[] args)
         {
+
             CommandsClass CommandsObject = new CommandsClass();
+            PrinterClass PrinterObject = new PrinterClass();
             AVL_Tree<int> BinaryTree = new AVL_Tree<int>(CommandsObject.Comp);
 
-            
+
+            PrinterObject.FillYourself(CommandsObject, BinaryTree);
+            PrinterObject.PrintInt(BinaryTree);
+            Console.ReadLine();
 
 
 
 
 
-            
 
 
         }
