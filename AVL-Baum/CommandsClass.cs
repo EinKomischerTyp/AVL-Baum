@@ -1,5 +1,4 @@
-﻿
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AVL_Tree
 {   /// <summary>
@@ -15,6 +14,7 @@ namespace AVL_Tree
             }
             return false;
         }
+
         public bool IsValid(int userInput, int min, int max)
         {
             if (userInput >= min && userInput <= max)
@@ -30,10 +30,12 @@ namespace AVL_Tree
                 return false;
             }
         }
+
         public bool NotNumber(string userInput)
         {
             return Regex.IsMatch(userInput, @"[^\d]");
         }
+
         public void NumberNotInRange()
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -47,6 +49,7 @@ namespace AVL_Tree
             Console.Clear();
             Console.ResetColor();
         }
+
         public void ValidationInputRangeMethod(string userInput, int min, int max, int userChosenNumber)
         {
             if (IsValid(userInput, min, max, out userChosenNumber))
@@ -71,6 +74,7 @@ namespace AVL_Tree
                 Console.ResetColor();
             }
         }
+
         public void NoNumberError()
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -84,6 +88,7 @@ namespace AVL_Tree
             Console.ResetColor();
             Console.Clear();
         }
+
         public void ValidateInput(int inputToValidate, int min, int max, out int result)
         {
             while (true)
@@ -109,9 +114,7 @@ namespace AVL_Tree
             }
         }
 
-        //public bool NumberExists(int)
-        //Delegate for BinaryTree
-        public int Comp(int a, int b)
+        public int Comp(int a, int b) //Delegate for BinaryTree
         {
             if (a < b) return -1;
             if (a == b) return 0;
@@ -119,6 +122,7 @@ namespace AVL_Tree
 
             return 0;
         }
+
         #region ACSII Art
         public string asciiError = @"
              ___                 
@@ -126,7 +130,20 @@ namespace AVL_Tree
             | _|| '_| '_/ _ \ '_|
             |___|_| |_| \___/_|  
                                  
-                                    "; // Quelle http://patorjk.com/software/taag/#p=display&h=2&v=3&c=c%2B%2B&f=Small&t=Error
+                                    "; // Source: http://patorjk.com/software/taag/#p=display&h=2&v=3&c=c%2B%2B&f=Small&t=Error
+
+        public string asciiTitle = @"
+    ___ _                              
+   | _ |_)_ _  __ _ _ _ _  _           
+   | _ \ | ' \/ _` | '_| || |          
+   |_____|_||_\__,_|_|  \_, |          
+   |_   _| _ ___ ___    |__/           
+     | || '_/ -_) -_)                  
+    ___|__| \___\____      _           
+   / __(_)_ __ _  _| |__ _| |_ ___ _ _ 
+   \__ \ | '  \ || | / _` |  _/ _ \ '_|
+   |___/_|_|_|_\_,_|_\__,_|\__\___/_|  
+                                       "; //Source: http://patorjk.com/software/taag/#p=display&h=2&v=3&c=c%2B%2B&f=Small&t=Binary%0ATree%0ASimulator
         #endregion
     }
 }

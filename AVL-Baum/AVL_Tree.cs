@@ -10,29 +10,29 @@ namespace AVL_Tree
     class Node<T>
     {
         public Node(T _data) => data = _data;
-
         public T data;
         public Node<T> left;
         public Node<T> right;
     }
+
     internal class AVL_Tree<T>
     {
         public Node<T> root;
         Comparison<T> compare;
         public int height = 0;
 
-
-        public AVL_Tree(Comparison<T> _comp)
+        public AVL_Tree(Comparison<T> _comp) //defines Delegate
         {
             compare = _comp;
             root = null;
         }
 
-        public void Add(T _data)
+        public void Add(T _data) //Adds Nodes to the Tree
         {
             root = AddRecursive(new Node<T>(_data), root);
+            Console.WriteLine($"{_data} was added to the tree.");
         }
-        
+
         private Node<T> AddRecursive(Node<T> _toAdd, Node<T> _root)
         {
             if (null == _root)
@@ -54,7 +54,7 @@ namespace AVL_Tree
             return _root;
         }
 
-        private Node<T> BalanceTree(Node<T> current)
+        private Node<T> BalanceTree(Node<T> current) // Balances the Tree based on the Balance Factor
         {
             int bal_Factor = balance_Factor(current);
             if (bal_Factor > 1)
@@ -81,93 +81,117 @@ namespace AVL_Tree
             }
             return current;
         }
+
+        /// <summary>
+        /// Deletes Nodes and rebalance tree
+        /// </summary>
         public void Delete(T target)
         {
             root = DeleteNode(root, target);
         }
-        
+
         private Node<T> DeleteNode(Node<T> current, T toDelete)
         {
             Node<T> parent;
-            if (null == current)
+            if (current == null)
             {
-                return null;
-            }
-            if (compare.Invoke(toDelete, current.data) < 0)
-            {
-                current.left = DeleteNode(current.left, toDelete);
-            }
-            else if (compare.Invoke(toDelete, current.data) > 0)
-            {
-                current.right = DeleteNode(current.right, toDelete);
+                Console.WriteLine("The number you're searching for wasn't found.");
+                return null; 
             }
             else
             {
-                if (null == current.left)
+                if (compare.Invoke(toDelete, current.data) < 0) //Search left tree
                 {
-                    return current.right;
-                }
-                else if (null == current.right)
-                {
-                    return current.left;
-                }
-                else
-                {
-                    parent = current;
-                    current = current.right;
-                    while (null != current.left)
+                    current.left = DeleteNode(current.left, toDelete);
+                    if (balance_Factor(current) == -2)
                     {
-                        parent = current;
-                        current = current.left;
+                        if (balance_Factor(current.right) <= 0)
+                        {
+                            current = RotateRight(current);
+                        }
+                        else
+                        {
+                            current = RotateRightLeft(current);
+                        }
                     }
-                    parent.left = current.right;
-                    current.left = current.right = null;
+                }
+                else if (compare.Invoke(toDelete, current.data) > 0) //Search right tree
+                {
+                    current.right = DeleteNode(current.right, toDelete);
+                    if (balance_Factor(current) == 2)
+                    {
+                        if (balance_Factor(current.left) >= 0)
+                        {
+                            current = RotateLeft(current);
+                        }
+                        else
+                        {
+                            current = RotateLeftRight(current);
+                        }
+                    }
+                }
+                else //Delete if found
+                {
+                    if (current.right != null)
+                    {
+                        parent = current.right;
+                        while (parent.left != null)
+                        {
+                            parent = parent.left;
+                        }
+                        current.data = parent.data;
+                        Console.WriteLine($"{current.data} will be deleted");
+                        current.right = DeleteNode(current.right, parent.data);
+                        if (balance_Factor(current) == 2)
+                        {
+                            if (balance_Factor(current.left) >= 0)
+                            {
+                                current = RotateLeft(current);
+                            }
+                            else { current = RotateLeftRight(current); }
+                        }
+                    }
+                    else
+                    {
+                        return current.left;
+                    }
                 }
             }
             return current;
         }
 
-        public void Find(T? key)
+        public void Find(T _input)
         {
-            try
-            {
-                if (compare.Invoke(Find(key, root).data, key) == 0) //(Find(key, root).data == key)//If nothing is found a NullReferenceException is expected here
-                {
-                    Console.WriteLine("{0} was found!", key);
-                }
-            }
-            catch (NullReferenceException)
-            {
-                Console.WriteLine("Nothing found!");
-            }
+            T key = _input;
+
+            if (Find(root, key))
+                Console.WriteLine();
+            else
+                Console.WriteLine("Nothing was found. Please try again, with a different number.");
         }
 
-        private Node<T> Find(T? search, Node<T> current) //If nothing is found a NullReferenceException is expected here
+        bool Find(Node<T> node, T key)
         {
-            try
+            if (node == null)
+                return false;
+            if (compare.Invoke(key, node.data) == 0)
             {
-                if (compare.Invoke(search, current.data) < 0)
-                {
-                    if (compare.Invoke(search, current.data) == 0)
-                    {
-                        return current;
-                    }
-                    else
-                        return Find(search, current.left);
-                }
-                else
-                {
-                    if (compare.Invoke(search, current.data) == 0)
-                    {
-                        return current;
-                    }
-                    else
-                        return Find(search, current.right);
-                }
+                Console.WriteLine($"The Node you searched was found and contains: {node.data} !");
+                return true;
             }
-            catch (NullReferenceException)
+            if (compare.Invoke(key, node.data) < 0)
             {
-                return null;
+                bool resultleft = Find(node.left, key);
+                if (resultleft) return true;
+            }
+            if (compare.Invoke(key, node.data) > 0)
+            {
+                bool resultright = Find(node.right, key);
+                return resultright;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -175,22 +199,24 @@ namespace AVL_Tree
         //evaluates a Boolean expression and returns the result of one of the two expressions,
         //depending on whether the Boolean expression evaluates to true or false
         //1Liner If-else
-        private int max(int left, int right)
+        private int maxHeight(int left, int right)
         {
             return left > right ? left : right;
         }
+
         public int getHeight(Node<T> current)
         {
-           height = 0;
-           if (current != null)
+            height = 0;
+            if (current != null)
             {
                 int left = getHeight(current.left);
                 int right = getHeight(current.right);
-                int m = max(left, right);
-                height = m + 1;
+                int maxHeightcount = maxHeight(left, right);
+                height = maxHeightcount + 1;
             }
             return height;
         }
+
         private int balance_Factor(Node<T> current)
         {
             int left = getHeight(current.left);
@@ -198,41 +224,41 @@ namespace AVL_Tree
             int bal_Factor = left - right;
             return bal_Factor;
         }
-        private Node<T> RotateRight(Node<T> parent)
+
+        /// <summary>
+        /// Node is handed over
+        /// declared as Pivot
+        /// left/right connected nodes 
+        /// rotate around pivot
+        /// </summary>
+        private Node<T> RotateRight(Node<T> node)
         {
-            Node<T> pivot = parent.right;
-            parent.right = pivot.left;
-            pivot.left = parent;
+            Node<T> pivot = node.right;
+            node.right = pivot.left;
+            pivot.left = node;
             return pivot;
         }
-        private Node<T> RotateLeft(Node<T> parent)
+
+        private Node<T> RotateLeft(Node<T> node)
         {
-            Node<T> pivot = parent.left;
-            parent.left = pivot.right;
-            pivot.right = parent;
+            Node<T> pivot = node.left;
+            node.left = pivot.right;
+            pivot.right = node;
             return pivot;
         }
-        private Node<T> RotateLeftRight(Node<T> parent)
+
+        private Node<T> RotateLeftRight(Node<T> node)
         {
-            Node<T> pivot = parent.left;
-            parent.left = RotateRight(pivot);
-            return RotateLeft(parent);
-        }
-        private Node<T> RotateRightLeft(Node<T> parent)
-        {
-            Node<T> pivot = parent.right;
-            parent.right = RotateLeft(pivot);
-            return RotateRight(parent);
+            Node<T> pivot = node.left;
+            node.left = RotateRight(pivot);
+            return RotateLeft(node);
         }
 
-        
-
-
+        private Node<T> RotateRightLeft(Node<T> node)
+        {
+            Node<T> pivot = node.right;
+            node.right = RotateLeft(pivot);
+            return RotateRight(node);
+        }
     }
-
 }
-
-
-
-
-
