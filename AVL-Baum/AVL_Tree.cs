@@ -195,11 +195,13 @@ namespace AVL_Tree
             }
         }
 
-        //The conditional operator ?:, also known as the ternary conditional operator,
+        //"The conditional operator ?:, also known as the ternary conditional operator,
         //evaluates a Boolean expression and returns the result of one of the two expressions,
-        //depending on whether the Boolean expression evaluates to true or false
+        //depending on whether the Boolean expression evaluates to true or false" - *2
         //1Liner If-else
-        private int maxHeight(int left, int right)
+        //Source: https://simpledevcode.wordpress.com/2014/09/16/avl-tree-in-c/ *1
+        //Source: https://docs.microsoft.com/de-de/dotnet/csharp/language-reference/operators/conditional-operator *2
+        private int maxHeight(int left, int right) // *1
         {
             return left > right ? left : right;
         }
