@@ -96,7 +96,7 @@ namespace AVL_Tree
             if (current == null)
             {
                 Console.WriteLine("The number you're searching for wasn't found.");
-                return null; 
+                return null;
             }
             else
             {

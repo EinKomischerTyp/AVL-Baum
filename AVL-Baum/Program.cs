@@ -19,11 +19,4 @@ namespace AVL_Tree
     }
 }
 
-//Eingabe beliebeige Zahlen hinzufügen      done
-//Delegaten übergeben zum Sortieren         done
-//Maximale Tiefe ausgeben                   done
-//Elemente finden,                          done
-// -"- hinzufügen                           done
-// -"- entfernen                            done
-//Abfragen, ob Element vorhanden ist        done
 
